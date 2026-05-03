@@ -1,0 +1,32 @@
+{
+  "name": "n8n-nodes-aurekai",
+  "version": "0.8.0-alpha.5",
+  "description": "Aurekai capability-native nodes for n8n",
+  "keywords": ["n8n-community-node-package", "aurekai", "akai"],
+  "license": "MIT",
+  "homepage": "https://github.com/aurekai/aurekai-n8n",
+  "author": { "name": "Aurekai", "email": "dev@aurekai.io" },
+  "repository": { "type": "git", "url": "https://github.com/aurekai/aurekai-n8n" },
+  "main": "index.js",
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": ["credentials/AurekaiApi.credentials.ts"],
+    "nodes": [
+      "nodes/AurekaiDoctor/AurekaiDoctor.node.ts",
+      "nodes/AurekaiTranscribe/AurekaiTranscribe.node.ts",
+      "nodes/AurekaiProofBundle/AurekaiProofBundle.node.ts",
+      "nodes/AurekaiInvoice/AurekaiInvoice.node.ts",
+      "nodes/AurekaiWireReport/AurekaiWireReport.node.ts",
+      "nodes/AurekaiMeter/AurekaiMeter.node.ts",
+      "nodes/AurekaiCapabilities/AurekaiCapabilities.node.ts"
+    ]
+  },
+  "scripts": {
+    "build": "tsc && npm run copy-icons",
+    "dev": "tsc --watch"
+  },
+  "devDependencies": {
+    "n8n-workflow": "*",
+    "typescript": "^5.3.0"
+  }
+}
