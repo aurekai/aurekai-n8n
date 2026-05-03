@@ -1,0 +1,93 @@
+{
+  "name": "Aurekai Core Pipeline",
+  "nodes": [
+    {
+      "id": "1",
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "2",
+      "name": "doctor-deep",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        450,
+        300
+      ],
+      "parameters": {
+        "command": "akai doctor --deep --json"
+      }
+    },
+    {
+      "id": "3",
+      "name": "manifest-verify",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        650,
+        300
+      ],
+      "parameters": {
+        "command": "akai verify --manifest artifact.json --json"
+      }
+    },
+    {
+      "id": "4",
+      "name": "release-gate",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        850,
+        300
+      ],
+      "parameters": {
+        "command": "akai release gate --version 0.8.0-alpha.4 --json"
+      }
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "doctor-deep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "doctor-deep": {
+      "main": [
+        [
+          {
+            "node": "manifest-verify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "manifest-verify": {
+      "main": [
+        [
+          {
+            "node": "release-gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "id": "aurekai-core-pipeline"
+}

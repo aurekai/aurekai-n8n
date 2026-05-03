@@ -1,0 +1,32 @@
+[
+  {
+    "id": "inbound-call-to-invoice",
+    "name": "Aurekai: Inbound Call to Invoice",
+    "description": "Webhook receives call audio → Aurekai transcribes → generates brief → proof bundle → invoice → outreach",
+    "nodes": [
+      { "type": "n8n-nodes-base.webhook", "parameters": { "path": "call-intake", "httpMethod": "POST" } },
+      { "type": "n8n-nodes-aurekai.aurekaiTranscribe", "parameters": { "audioPath": "={{ $json.audio_path }}", "language": "en" } },
+      { "type": "n8n-nodes-aurekai.aurekaiProofBundle", "parameters": {} },
+      { "type": "n8n-nodes-aurekai.aurekaiInvoice", "parameters": { "clientId": "={{ $json.client_id }}", "period": "current" } },
+      { "type": "n8n-nodes-aurekai.aurekaiMeter", "parameters": { "event": "call-intake", "units": 1, "clientId": "={{ $json.client_id }}" } }
+    ]
+  },
+  {
+    "id": "api-key-to-metered-usage",
+    "name": "Aurekai: API Key to Metered Usage",
+    "description": "API usage event → meter record → ledger export",
+    "nodes": [
+      { "type": "n8n-nodes-base.webhook", "parameters": { "path": "api-usage", "httpMethod": "POST" } },
+      { "type": "n8n-nodes-aurekai.aurekaiMeter", "parameters": { "event": "={{ $json.event }}", "units": "={{ $json.units }}", "clientId": "={{ $json.client_id }}" } }
+    ]
+  },
+  {
+    "id": "wire-report-to-routing",
+    "name": "Aurekai: Wire Report to Routing Suggestion",
+    "description": "Wire capture webhook → ingest PCAP → report → reason branch",
+    "nodes": [
+      { "type": "n8n-nodes-base.webhook", "parameters": { "path": "wire-capture", "httpMethod": "POST" } },
+      { "type": "n8n-nodes-aurekai.aurekaiCapabilities", "parameters": {} }
+    ]
+  }
+]
