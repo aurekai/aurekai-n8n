@@ -6,7 +6,7 @@
 
 Aurekai integration surface for N8N.
 
-Status: planned
+Status: active
 Type: workflow
 
 ## Core Template Set
